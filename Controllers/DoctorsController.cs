@@ -1,5 +1,6 @@
 using ClinicApi.DTOs.Doctors;
 using ClinicApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicApi.Controllers;
@@ -35,6 +36,7 @@ public class DoctorsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<DoctorDto>> Create(CreateDoctorDto dto)
     {
         var created = await _doctorService.CreateAsync(dto);
@@ -42,6 +44,7 @@ public class DoctorsController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize]
     public async Task<ActionResult<DoctorDto>> Update(int id, UpdateDoctorDto dto)
     {
         var updated = await _doctorService.UpdateAsync(id, dto);
@@ -54,6 +57,7 @@ public class DoctorsController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _doctorService.DeleteAsync(id);
