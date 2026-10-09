@@ -12,5 +12,23 @@ services:
     volumes:
       - sqlserver-data:/var/opt/mssql
 
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clinic-api
+    restart: unless-stopped
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=ClinicDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True;
+      - Jwt__Key=ThisIsADevOnlySecretKeyChangeIt1234567890
+      - Jwt__Issuer=ClinicApi
+      - Jwt__Audience=ClinicApiUsers
+      - Jwt__ExpiresInMinutes=60
+    ports:
+      - "8080:8080"
+
 volumes:
   sqlserver-data:
